@@ -1,9 +1,14 @@
 <template>
   <div>
     <h2>
-      {{ digitOne }} + {{ digitTwo }} =
+      {{ leftSide }} + {{ rightSide }} =
       <form @submit.prevent="submitAnswer" class="inline">
-        <input v-model="svar" class="w-16 h-16 p-3 text-center" />
+        <input v-model="svar" class="w-16 h-16 p-3 text-center rounded-lg" />
+        <button
+          class="ml-4 p-4 bg-yellow hover:bg-yellow-dark text-white font-bold Xborder-2 rounded-lg Xborder-yellow"
+        >
+          Ok
+        </button>
       </form>
     </h2>
     <h3>{{ feedback }}</h3>
@@ -29,17 +34,30 @@ export default {
     sumMax: {
       type: Number,
       default: 20
+    },
+    seriesLength: {
+      type: Number,
+      default: 10
     }
   },
   data() {
     return {
+      leftSide: this.digitOne,
+      rightSide: this.digitTwo,
       svar: null,
-      feedback: ''
+      feedback: '',
+      count: 1
     };
   },
   computed: {
+    // leftSide() {
+    //   return this.digitOne;
+    // },
+    // rightSide() {
+    //   return this.digitTwo;
+    // },
     fasit: function() {
-      return this.digitOne + this.digitTwo;
+      return this.leftSide + this.rightSide;
     }
   },
   methods: {
@@ -51,15 +69,25 @@ export default {
 
     submitAnswer: function() {
       this.feedback = 'Ooops, prøv igjen!';
+      // svaret er rett
       if (+this.svar === this.fasit) {
-        // enter
-        this.$router.push({ path: 'register' });
+        // Gi beskjed oppover hvis de lytter
+        if (this.$listeners.success) {
+          this.$emit('success');
+        }
+
         // feeback
-        this.feedback = `JA! Det er helt rett! ${this.digitOne} + ${
-          this.digitTwo
-        } = ${this.fasit}`;
-        this.digitOne = this.getRandomInt();
-        this.digitTwo = this.getRandomInt(1, this.sumMax - this.digitOne);
+        this.feedback = `
+          JA! Det er helt rett!
+          ${this.leftSide} + ${this.rightSide} = ${this.fasit}
+        `;
+
+        // skal vi gi et regnestykke til?
+        if (this.count < this.seriesLength) {
+          this.leftSide = this.getRandomInt();
+          this.rightSide = this.getRandomInt(1, this.sumMax - this.leftSide);
+          this.count++;
+        }
       }
       this.svar = null;
     }

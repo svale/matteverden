@@ -1,8 +1,8 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <h3>Løs inngangsoppgaven:</h3>
-    <calculator></calculator>
+    <h3 class="mb-4">Løs inngangsoppgaven:</h3>
+    <calculator v-on:success="enter"></calculator>
   </div>
 </template>
 
@@ -23,9 +23,9 @@ export default {
     };
   },
   computed: {
-    fasit: function() {
-      return this.tall1 + this.tall2;
-    }
+    // fasit: function() {
+    //   return this.tall1 + this.tall2;
+    // }
     // tall1: function() {
     //   return this.getRandomInt();
     // },
@@ -35,12 +35,18 @@ export default {
   },
   props: {
     msg: String
+  },
+  methods: {
+    enter() {
+      // setTimeout(() => {
+      //   this.$router.push({ path: 'register' });
+      // }, 2000);
+    }
   }
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
+<style lang="scss">
 h3 {
   margin: 40px 0 0;
 }
