@@ -1,16 +1,18 @@
 <template>
   <div>
-    <h2>
-      {{ leftSide }} + {{ rightSide }} =
-      <form @submit.prevent="submitAnswer" class="inline">
-        <input v-model="svar" class="w-16 h-16 p-3 text-center rounded-lg" />
-        <button
-          class="ml-4 p-4 bg-yellow hover:bg-yellow-dark text-white font-bold Xborder-2 rounded-lg Xborder-yellow"
-        >
-          Ok
-        </button>
-      </form>
-    </h2>
+    <transition name="fade">
+      <h2 v-if="showCalculator">
+        {{ leftSide }} + {{ rightSide }} =
+        <form @submit.prevent="submitAnswer" class="inline">
+          <input v-model="svar" class="w-16 h-16 p-3 text-center rounded-lg" />
+          <button
+            class="ml-4 p-4 bg-yellow hover:bg-yellow-dark text-white font-bold rounded-lg"
+          >
+            Ok
+          </button>
+        </form>
+      </h2>
+    </transition>
     <h3>{{ feedback }}</h3>
   </div>
 </template>
@@ -25,11 +27,11 @@ export default {
     },
     digitOne: {
       type: Number,
-      default: 2
+      default: 1
     },
     digitTwo: {
       type: Number,
-      default: 3
+      default: 1
     },
     sumMax: {
       type: Number,
@@ -46,7 +48,8 @@ export default {
       rightSide: this.digitTwo,
       svar: null,
       feedback: '',
-      count: 1
+      count: 1,
+      showCalculator: true
     };
   },
   computed: {
@@ -87,6 +90,9 @@ export default {
           this.leftSide = this.getRandomInt();
           this.rightSide = this.getRandomInt(1, this.sumMax - this.leftSide);
           this.count++;
+        } else {
+          // fade ut calculatoren
+          this.showCalculator = false;
         }
       }
       this.svar = null;

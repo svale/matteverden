@@ -2,7 +2,12 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <h3 class="mb-4">Løs inngangsoppgaven:</h3>
-    <calculator v-on:success="enter"></calculator>
+    <calculator
+      :digitOne="tall1"
+      :digitTwo="tall2"
+      v-on:success="enter"
+      :seriesLength="1"
+    ></calculator>
   </div>
 </template>
 
@@ -17,8 +22,6 @@ export default {
     return {
       svar: null,
       feedback: '',
-      tall1: 2,
-      tall2: 3,
       sumMax: 20
     };
   },
@@ -26,21 +29,26 @@ export default {
     // fasit: function() {
     //   return this.tall1 + this.tall2;
     // }
-    // tall1: function() {
-    //   return this.getRandomInt();
-    // },
-    // tall2: function() {
-    //   return this.getRandomInt();
-    // }
+    tall1: function() {
+      return this.getRandomInt();
+    },
+    tall2: function() {
+      return this.getRandomInt(1, 10 - this.tall1);
+    }
   },
   props: {
     msg: String
   },
   methods: {
+    getRandomInt: function(min = 1, max = 9) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+    },
     enter() {
-      // setTimeout(() => {
-      //   this.$router.push({ path: 'register' });
-      // }, 2000);
+      setTimeout(() => {
+        this.$router.push({ path: 'register' });
+      }, 2000);
     }
   }
 };

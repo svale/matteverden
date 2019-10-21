@@ -18,6 +18,10 @@ export default {
 </script>
 
 <style>
+body {
+  background-color: #36acfe;
+}
+
 img {
   width: 200px;
 }
